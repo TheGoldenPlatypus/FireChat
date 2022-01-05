@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_background_sign_in"
+    tools:context=".activities.LoginActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:id="@+id/login_EDT_email"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="240dp"
+            android:hint="Email"
+            app:boxStrokeColor="#0671db"
+            android:textColorHint ="#afafaf"
+            app:boxBackgroundColor="#FFFFFF	"
+            android:inputType="textEmailAddress"
+            android:padding="16dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="30"
+                android:imeOptions="actionDone"
+                android:textColor="#0671db"
+                android:textColorHint="#0671db" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:id="@+id/login_EDT_password"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="310dp"
+            android:hint="Password"
+            android:textColorHint = "#afafaf"
+            app:boxBackgroundColor="#FFFFFF	"
+            app:boxStrokeColor="#0671db"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="30"
+                android:textColorHint="#0671db"
+                android:textColor="#0671db"
+                android:imeOptions="actionDone" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_BTN_forgot_password"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="380dp"
+            android:text="Forgot password? Click here"
+            android:textAllCaps="false"
+            android:textColor="#0671db"
+            android:textSize="12sp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_BTN_login"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="430dp"
+            android:text="Login"
+            android:textColor="#0671db"
+            app:cornerRadius="50dp"
+            app:strokeColor="#0671db"
+            app:strokeWidth="2dp" />
+
+
+        <TextView
+            android:id="@+id/login_TXT_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="540dp"
+            android:text="Don't have account? \nor"
+            android:textColor="#afafaf"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_BTN_register"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="255dp"
+            android:layout_marginTop="528dp"
+            android:text="Sign up"
+            android:textAllCaps="false"
+            android:textColor="#0671db"
+            android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_BTN_login_phone"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="93dp"
+            android:layout_marginTop="570dp"
+            android:text="Login using phone"
+            android:textAllCaps="false"
+            android:textColor="#0671db"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

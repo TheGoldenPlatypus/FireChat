@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_background_register"
+    tools:context=".activities.RegisterActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_EDT_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="240dp"
+            android:hint="Email"
+            app:boxStrokeColor="#0671db"
+            android:textColorHint ="#afafaf"
+            app:boxBackgroundColor="#FFFFFF	"
+            android:inputType="textEmailAddress"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="30"
+                android:imeOptions="actionDone"
+                android:textColor="#0671db"
+                android:textColorHint="#0671db"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_EDT_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="310dp"
+            android:hint="Password"
+            app:boxStrokeColor="#0671db"
+            android:textColorHint ="#afafaf"
+            app:boxBackgroundColor="#FFFFFF	"
+            android:inputType="textPassword"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="30"
+                android:imeOptions="actionDone"
+                android:textColor="#0671db"
+                android:textColorHint="#0671db"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/register_BTN_create_account"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="420dp"
+            android:text="Create Account"
+            android:textColor="#0671db"
+            app:cornerRadius="50dp"
+            app:strokeColor="#0671db"
+            app:strokeWidth="2dp" />
+
+
+        <TextView
+            android:id="@+id/register_TXT_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="560dp"
+            android:text="Already have an account?"
+            android:textColor="#afafaf"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/register_BTN_login"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="290dp"
+            android:layout_marginTop="547dp"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="#0671db"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
