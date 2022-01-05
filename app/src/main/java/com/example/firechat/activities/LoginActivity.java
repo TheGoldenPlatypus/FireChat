@@ -93,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {
         loadingBar.show();
 
     }
-
     private void displayToast(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
 
