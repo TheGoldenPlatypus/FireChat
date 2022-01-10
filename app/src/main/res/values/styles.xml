@@ -9,4 +9,9 @@
 
     </style>
 
+    <style name="AlertDialog" parent="Theme.AppCompat.DayNight.Dialog">
+
+
+    </style>
+
 </resources>

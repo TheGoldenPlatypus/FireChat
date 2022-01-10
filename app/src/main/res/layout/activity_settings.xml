@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_background_empty_no_panel"
+    tools:context=".activities.SettingsActivity">
+
+
+    <ImageView
+        android:layout_width="430dp"
+        android:layout_height="430dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="153dp"
+        android:src="@drawable/img_panel" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_profile_image"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/img_profile_default"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="5dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/settings_EDT_set_usr_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="300dp"
+        android:hint="set new user name"
+        app:boxStrokeColor="#0671db"
+        android:textColorHint ="#afafaf"
+        app:boxBackgroundColor="#FFFFFF	"
+        android:padding="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="30"
+            android:imeOptions="actionDone"
+            android:textColor="#0671db"
+            android:textColorHint="#0671db"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/settings_EDT_set_usr_status"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="370dp"
+        android:hint="Hey, I'm online now."
+        app:boxStrokeColor="#0671db"
+        android:textColorHint ="#afafaf"
+        app:boxBackgroundColor="#FFFFFF	"
+        android:padding="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="30"
+            android:imeOptions="actionDone"
+            android:textColor="#0671db"
+            android:textColorHint="#0671db"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/settings_BTN_update"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="465dp"
+        android:text="UPDATE"
+        android:textColor="#0671db"
+        app:cornerRadius="50dp"
+        app:strokeColor="#0671db"
+        app:strokeWidth="2dp" />
+
+</RelativeLayout>

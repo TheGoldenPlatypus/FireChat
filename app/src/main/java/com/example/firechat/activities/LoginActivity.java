@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseUser currentUser;
     private TextInputLayout login_EDT_email,login_EDT_password;
     private MaterialButton login_BTN_forgot_password,login_BTN_login,login_BTN_register,login_BTN_login_phone;
 
@@ -36,24 +35,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
         findViews();
         initializeViewsListeners();
     }
 
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // user is logged in
-        if(currentUser != null)
-        {
-            // send user back to the main activity
-            passUserToMainActivity();
 
-        }
-    }
 
     private void initializeViewsListeners() {
         login_BTN_register.setOnClickListener(v ->passUserToRegisterActivity());
@@ -98,9 +86,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void passUserToMainActivity() {
-
-        Intent mainIntent = new Intent( LoginActivity.this,MainActivity.class);
+        Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+        // user can't go back if the back button is pressed
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
+        finish();
 
     }
     private void passUserToRegisterActivity() {
