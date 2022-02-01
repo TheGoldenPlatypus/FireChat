@@ -46,7 +46,10 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeViewsListeners() {
         login_BTN_register.setOnClickListener(v ->passUserToRegisterActivity());
         login_BTN_login.setOnClickListener(v ->login());
+        login_BTN_login_phone.setOnClickListener(v ->passUserToPhoneLoginActivity());
     }
+
+
 
     private void login() {
         String email =String.valueOf(login_EDT_email.getEditText().getText());
@@ -83,6 +86,12 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void displayToast(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+
+    }
+    private void passUserToPhoneLoginActivity() {
+        Intent phoneLoginIntent = new Intent(LoginActivity.this,PhoneLoginActivity.class);
+        startActivity(phoneLoginIntent);
+
 
     }
     private void passUserToMainActivity() {
