@@ -27,7 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView userProfileImage;
     private TextView userProfileName, userProfileStatus;
-    private MaterialButton sendMessageButton;
+    private MaterialButton sendMessageButton, declineMessageButton;
 
     private DatabaseReference userRef, chatRequestRef;
     private FirebaseAuth mAuth;
@@ -96,6 +96,18 @@ public class ProfileActivity extends AppCompatActivity {
                         currentState = "request_sent";
                         sendMessageButton.setText("Cancel Chat Request");
                     }
+                    else if(requestType.equals("received")){
+                        currentState = "request_received";
+                        sendMessageButton.setText("Accept Chat Request");
+                        declineMessageButton.setVisibility(View.VISIBLE);
+                        declineMessageButton.setEnabled(true);
+                        declineMessageButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                cancelChatRequest();
+                            }
+                        });
+                    }
                 }
             }
 
@@ -112,7 +124,9 @@ public class ProfileActivity extends AppCompatActivity {
                     sendMessageButton.setEnabled(false);
                     if (currentState.equals("new")){
                         sendChatRequest();
-
+                    }
+                    if(currentState.equals("request_sent")){
+                        cancelChatRequest();
                     }
                 }
             });
@@ -121,6 +135,23 @@ public class ProfileActivity extends AppCompatActivity {
         else{
             sendMessageButton.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void cancelChatRequest() {
+        chatRequestRef.child(receiverUserId).child(senderUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if ((task.isSuccessful())){
+                        sendMessageButton.setEnabled(true);
+                        currentState = "new";
+                        sendMessageButton.setText("Send Message");
+                        declineMessageButton.setVisibility(View.INVISIBLE);
+                        declineMessageButton.setEnabled(false);
+                }
+
+            }
+        });
     }
 
     private void sendChatRequest() {
@@ -150,5 +181,6 @@ public class ProfileActivity extends AppCompatActivity {
         userProfileName = findViewById(R.id.visit_user_name);
         userProfileStatus = findViewById(R.id.visit_profile_status);
         sendMessageButton = findViewById(R.id.visit_BTN_send_message);
+        declineMessageButton = findViewById(R.id.visit_BTN_decline_message);
     }
 }

@@ -13,9 +13,8 @@
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
-        android:src="@drawable/img_profile_default"
-        />
+        android:layout_marginTop="90dp"
+        android:src="@drawable/img_profile_default" />
 
     <TextView
         android:id="@+id/visit_user_name"
@@ -23,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/visit_profile_image"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         android:layout_marginRight="15dp"
         android:text="user name"
         android:textAlignment="center"
@@ -38,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/visit_user_name"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
         android:text="Hey, I'm using FireChat"
         android:textAlignment="center"
@@ -50,14 +49,30 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/visit_BTN_send_message"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_below="@id/visit_profile_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="440dp"
+        android:layout_marginTop="15dp"
         android:text="Send Message"
         android:textColor="#0671db"
         app:cornerRadius="50dp"
         app:strokeColor="#0671db"
         app:strokeWidth="2dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/visit_BTN_decline_message"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_below="@id/visit_BTN_send_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:text="Decline Chat Request"
+        android:textColor="#0671db"
+        app:cornerRadius="50dp"
+        app:strokeColor="#0671db"
+        app:strokeWidth="2dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
