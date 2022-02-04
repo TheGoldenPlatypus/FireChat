@@ -177,10 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void passUserToSettingsActivity() {
         Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-        // user can't go back if the back button is pressed
-        settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(settingsIntent);
-        finish();
 
     }
     private void findViews(){

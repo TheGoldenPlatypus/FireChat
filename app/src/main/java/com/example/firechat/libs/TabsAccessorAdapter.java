@@ -11,6 +11,7 @@ import com.example.firechat.fragments.ChatsFragment;
 import com.example.firechat.fragments.ContactsFragment;
 import com.example.firechat.fragments.FeedFragment;
 import com.example.firechat.fragments.GroupsFragment;
+import com.example.firechat.fragments.RequestsFragment;
 
 public class TabsAccessorAdapter extends FragmentPagerAdapter {
 
@@ -33,6 +34,10 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
                 ContactsFragment contactsFragment = new ContactsFragment();
                 return contactsFragment;
             case 3:
+                RequestsFragment requestsFragment = new RequestsFragment();
+                return requestsFragment;
+
+            case 4:
                 FeedFragment feedFragment = new FeedFragment();
                 return feedFragment;
 
@@ -44,7 +49,7 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     @Nullable
@@ -60,6 +65,8 @@ public class TabsAccessorAdapter extends FragmentPagerAdapter {
             case 2:
                 return "Contacts";
             case 3:
+                return "Requests";
+            case 4:
                 return "Feed";
             default:
                 return null;

@@ -181,7 +181,7 @@ public class GroupChatActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(currentGroupName);
         sendButton = findViewById(R.id.img_BTN_send);
         userMessageInput= findViewById(R.id.input_EDT_group_message);
-        sv = findViewById(R.id.my_scroll_view);
+        sv = findViewById(R.id.group_chat_scroll_view);
         displayTextMessages = findViewById(R.id.group_chat_TXT_display);;
     }
 }

@@ -3,6 +3,7 @@ package com.example.firechat.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -48,6 +49,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static final int galleryPick = 1;
     private StorageReference userProfileImagesRef;
+
+    private Toolbar settingsToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
             profileMap.put("uid",currentUserId);
             profileMap.put("name",setUsrName);
             profileMap.put("status",setUsrStatus);
-            rootReference.child("Users").child(currentUserId).setValue(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            rootReference.child("Users").child(currentUserId).updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
@@ -216,8 +219,12 @@ public class SettingsActivity extends AppCompatActivity {
         settings_EDT_set_usr_status  = findViewById(R.id.settings_EDT_set_usr_status);
         settings_BTN_update  = findViewById(R.id.settings_BTN_update);
         img_profile_image  = findViewById(R.id.img_profile_image);
-
         settings_EDT_set_usr_name.setVisibility(View.INVISIBLE);
+        settingsToolbar = findViewById(R.id.settings_toolbar);
+        setSupportActionBar(settingsToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Account Settings");
 
     }
 }

@@ -49,9 +49,9 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/visit_BTN_send_message"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_below="@id/visit_profile_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/visit_profile_status"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:text="Send Message"

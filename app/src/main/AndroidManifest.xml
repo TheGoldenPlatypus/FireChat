@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FireChat">
         <activity
+            android:name=".activities.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
@@ -26,7 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.GroupChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.SettingsActivity"
             android:exported="false" />
