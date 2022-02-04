@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.firechat.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -22,6 +23,7 @@ public class ChatActivity extends AppCompatActivity {
     private CircleImageView userImage;
 
     private Toolbar ChatToolBar;
+    private FirebaseAuth mAuth;
 
 
 
