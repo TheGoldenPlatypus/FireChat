@@ -12,36 +12,41 @@
         >
     </include>
 
-    <ScrollView
-        android:id="@+id/group_chat_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/my_linear_layout"
-        android:layout_below="@id/chat_toolbar">
 
-        <LinearLayout
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_recycler_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chat_toolbar"
+            android:layout_above="@+id/my_linear_layout"
+            android:layout_marginBottom="6dp">
 
-            <TextView
-                android:id="@+id/chat_TXT_display"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="60dp"
-                android:padding="10dp"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-
-
-        </LinearLayout>
-
-    </ScrollView>
+        </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/chat_TXT_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="60dp"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
         android:id="@+id/my_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,22 +54,41 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/img_BTN_chat_send_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/img_icon_send_file" />
+
+        <ImageButton
+            android:id="@+id/img_BTN_chat_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/img_icon_send"
+            />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_EDT_chat_message"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="370dp"
+            android:layout_width="340dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@+id/img_BTN_chat_send_file"
+            android:layout_toStartOf="@+id/img_BTN_chat_send"
             android:textColorHint="#afafaf"
             app:boxCornerRadiusBottomEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
-            app:boxStrokeColor="#0671db">
+            app:boxStrokeColor="#0671db"
+            >
 
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="370dp"
+                android:layout_width="340dp"
                 android:layout_height="wrap_content"
                 android:ems="30"
                 android:imeOptions="actionDone"
@@ -74,14 +98,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <ImageButton
-            android:id="@+id/img_BTN_chat_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/img_icon_send"
-            />
 
-    </LinearLayout>
+
+    </RelativeLayout>
 </RelativeLayout>

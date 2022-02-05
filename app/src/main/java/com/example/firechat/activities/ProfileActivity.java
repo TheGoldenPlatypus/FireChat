@@ -19,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -41,7 +43,6 @@ public class ProfileActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         chatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
         contactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
-
 
         receiverUserId = getIntent().getExtras().get("visit_user_id").toString();
         senderUserId = mAuth.getCurrentUser().getUid();
@@ -272,8 +273,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
+
+
+
                     chatRequestRef.child(receiverUserId).child(senderUserId).child("request_type").setValue("received").
-                    addOnCompleteListener(new OnCompleteListener<Void>() {
+                            addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){

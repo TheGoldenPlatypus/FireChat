@@ -117,6 +117,7 @@ public class ChatsFragment extends Fragment
                                         holder.userStatus.setText("offline");
                                     }
 
+
                                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view)
