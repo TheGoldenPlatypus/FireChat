@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.example.firechat.R;
 import com.example.firechat.activities.GroupChatActivity;
+import com.example.firechat.data.KeysAndValues;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,7 +50,7 @@ public class GroupsFragment extends Fragment {
 
         groupFragmentView = inflater.inflate(R.layout.fragment_groups, container, false);
         //initialize the ref firebase DB to the groups nodes
-        groupReference = FirebaseDatabase.getInstance().getReference().child("Groups");
+        groupReference = FirebaseDatabase.getInstance().getReference().child(KeysAndValues.GROUPS);
         findViews();
         retrieveAndDisplayGroups();
         initializeViewsListeners();
@@ -63,7 +64,7 @@ public class GroupsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String currentGroupName = parent.getItemAtPosition(position).toString();
                 Intent groupChatIntent = new Intent(getContext(), GroupChatActivity.class);
-                groupChatIntent.putExtra("groupName",currentGroupName);
+                groupChatIntent.putExtra(KeysAndValues.GROUP_NAME,currentGroupName);
                 startActivity(groupChatIntent);
             }
         });

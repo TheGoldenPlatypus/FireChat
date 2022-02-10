@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="98dp"
+        android:layout_height="75dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
@@ -15,8 +16,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_image"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:src="@drawable/img_profile_default" />
 
         <LinearLayout
@@ -54,47 +55,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="user status"
-                android:textAlignment="textEnd"
+                android:textAlignment="textStart"
 
                 android:textSize="12sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/request_accept_btn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Accept"
-                    android:textSize="16sp"
-                    android:textAllCaps="false"
-                    android:textColor="#0671db"
-                    app:cornerRadius="50dp"
-                    app:strokeColor="#0671db"
-                    app:strokeWidth="2dp"
-                    android:visibility="invisible"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/request_cancel_btn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Decline"
-                    android:textSize="16sp"
-                    android:layout_marginStart="15dp"
-                    android:textAllCaps="false"
-                    android:textColor="#0671db"
-                    app:cornerRadius="50dp"
-                    app:strokeColor="#0671db"
-                    app:strokeWidth="2dp"
-                    android:visibility="invisible"/>
-
-            </LinearLayout>
 
         </LinearLayout>
 

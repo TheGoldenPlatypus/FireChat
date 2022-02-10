@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.firechat.R;
 
+import com.example.firechat.data.KeysAndValues;
 import com.example.firechat.utils.MessageAdapter;
 import com.example.firechat.utils.Messages;
 import com.google.android.gms.tasks.Continuation;
@@ -57,34 +58,27 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
-    private String messageReceiverId, messageReceiverName,messageReceiverImage, messageSenderId;
 
     private TextView userName, userLastSeen;
     private CircleImageView userImage;
-
     private Toolbar chatToolBar;
-    private FirebaseAuth mAuth;
-
-    private DatabaseReference rootRef;
-
     private ImageButton sendMessageButton, sendFilesButton;
-   private TextInputLayout messageInputText;
+    private TextInputLayout messageInputText;
+    private RecyclerView userMessagesList;
+    private ProgressDialog loadingBar;
 
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference rootRef;
+    private StorageTask uploadTask;
+    private Uri fileUri;
 
     private final List<Messages> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
-    private RecyclerView userMessagesList;
 
-    private String saveCurrentTime, saveCurrentDate;
+    private String messageReceiverId, messageReceiverName,messageReceiverImage, messageSenderId,saveCurrentTime, saveCurrentDate;
     private String checker= "", myUrl="";
-    private StorageTask uploadTask;
-    private Uri fileUri;
-
-    private ProgressDialog loadingBar;
-
-
-
 
 
     @Override
@@ -92,76 +86,19 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        mAuth = FirebaseAuth.getInstance();
-        messageSenderId = mAuth.getCurrentUser().getUid();
-        rootRef = FirebaseDatabase.getInstance().getReference();
-
-        messageReceiverId = getIntent().getExtras().get("visit_user_id").toString();
-        messageReceiverName = getIntent().getExtras().get("visit_user_name").toString();
-        messageReceiverImage = getIntent().getExtras().get("visit_image").toString();
-
+        initializeFirebaseComponents();
+        unloadIntentData();
         initializeControllers();
-
         initializeListeners();
-
         userName.setText(messageReceiverName);
         Picasso.get().load(messageReceiverImage).placeholder(R.drawable.img_profile_default).into(userImage);
-
         displayLastSeen();
 
-
-
     }
 
 
-    private void initializeListeners() {
-        sendMessageButton.setOnClickListener(v -> sendMessage());
-        sendFilesButton.setOnClickListener(v -> filesHandler());
 
-    }
 
-    private void filesHandler() {
-        CharSequence options[] = new CharSequence[]
-                {
-                        "Images",
-                        "Pdf Files",
-                        "MS Word Files"
-                };
-        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
-        builder.setTitle("Select the File");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                if (which == 0) {
-                    checker = "image";
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("image/*");
-                    startActivityForResult(intent.createChooser(intent, "Select Image"), 443);
-                }
-
-                if (which == 1) {
-                    checker = "pdf";
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("application/pdf");
-                    startActivityForResult(intent.createChooser(intent, "Select PDF"), 443);
-                }
-
-                if (which == 2) {
-                    checker = "docx";
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("application/msword");
-                    startActivityForResult(intent.createChooser(intent, "Select MSWORD FILE"), 443);
-                }
-
-            }
-        });
-        builder.show();
-
-    }
 
     private void initializeControllers() {
         chatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
@@ -188,7 +125,6 @@ public class ChatActivity extends AppCompatActivity {
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messageAdapter);
 
-        loadingBar = new ProgressDialog(this);
 
         Calendar calendar = Calendar.getInstance();
 
@@ -201,134 +137,78 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 443 && requestCode == RESULT_OK && data!=null && data.getData()!=null){
-
-            loadingBar.setTitle("Sending File");
-            loadingBar.setMessage("Please wait while we are sending the file...");
-            loadingBar.setCanceledOnTouchOutside(false);
-            loadingBar.show();
-            fileUri = data.getData();
-
-            if(!checker.equals("image")){
-
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Document Files");
-                final String messageSenderRef = "Messages/" + messageSenderId + "/" + messageReceiverId;
-                final String messageReceiverRef = "Messages/" + messageReceiverId + "/" + messageSenderId;
-
-                DatabaseReference userMessageKeyRef = rootRef.child("Messages")
-                        .child(messageSenderId).child(messageReceiverId).push();
-
-
-                final String messagePushID = userMessageKeyRef.getKey();
-
-                final StorageReference filePath = storageReference.child(messagePushID + "." + checker);
-
-                filePath.putFile(fileUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if(task.isSuccessful())
-                        {
-                            Map messageTextBody = new HashMap();
-                            messageTextBody.put("message", myUrl);
-                            messageTextBody.put("name",fileUri.getLastPathSegment());
-                            if(checker.equals("pdf"))
-                            {
-                                messageTextBody.put("type", checker);
-                            }
-                            else
-                            {
-                                messageTextBody.put("type", checker);
-                            }
-
-                            messageTextBody.put("from", messageSenderId);
-                            messageTextBody.put("to", messageReceiverId);
-                            messageTextBody.put("messageID", messagePushID);
-                            messageTextBody.put("time", saveCurrentTime);
-                            messageTextBody.put("date", saveCurrentDate);
-
-                            Map messageBodyDetails = new HashMap();
-                            messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
-                            messageBodyDetails.put( messageReceiverRef + "/" + messagePushID, messageTextBody);
-
-                            rootRef.updateChildren(messageBodyDetails);
-                            loadingBar.dismiss();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        loadingBar.dismiss();
-                        displayToast(e.getMessage());
-
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                        double p = (100.0 * snapshot.getBytesTransferred())/snapshot.getTotalByteCount();
-                        loadingBar.setMessage((int)p + "% Uploading...");
-                    }
-                });
+    protected void onStart()
+    {
+        super.onStart();
+        rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Messages messages = snapshot.getValue(Messages.class);
+                messagesList.add(messages);
+                messageAdapter.notifyDataSetChanged();
+                userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
             }
-            else if(checker.equals("image")){
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Image Files");
-                final String messageSenderRef = "Messages/" + messageSenderId + "/" + messageReceiverId;
-                final String messageReceiverRef = "Messages/" + messageReceiverId + "/" + messageSenderId;
-                DatabaseReference userMessageKeyRef = rootRef.child("Messages")
-                        .child(messageSenderId).child(messageReceiverId).push();
 
-                final String messagePushID = userMessageKeyRef.getKey();
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                final StorageReference filePath = storageReference.child(messagePushID + "." + "jpg");
-
-                uploadTask = filePath.putFile(fileUri);
-                uploadTask.continueWithTask(new Continuation() {
-                    @Override
-                    public Object then(@NonNull Task task) throws Exception {
-
-                        if(!task.isSuccessful())
-                        {
-                            throw task.getException();
-                        }
-                        return filePath.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task <Uri>task) {
-                        Uri downloadUrl = task.getResult();
-                        myUrl = downloadUrl.toString();
-
-                        Map messageImageBody = new HashMap();
-                        messageImageBody.put("message", myUrl);
-                        messageImageBody.put("name", fileUri.getLastPathSegment());
-                        messageImageBody.put("type", checker);
-                        messageImageBody.put("from", messageSenderId);
-                        messageImageBody.put("to", messageReceiverId);
-                        messageImageBody.put("messageID", messagePushID);
-                        messageImageBody.put("time", saveCurrentTime);
-                        messageImageBody.put("date", saveCurrentDate);
-
-
-                        Map messageBodyDetails = new HashMap();
-                        messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageImageBody);
-                        messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageImageBody);
-
-                        rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-                                messageInputText.getEditText().setText("");
-                            }
-                        });
-
-                    }
-                });
             }
-            else{
-                displayToast("No file were selected");
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
             }
-            loadingBar.dismiss();
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void sendMessage(){
+        String message =String.valueOf(messageInputText.getEditText().getText());
+        if(TextUtils.isEmpty(message))
+            displayToast("Please write message first");
+
+        else{
+            String messageSenderRef = "Messages/"+ messageSenderId + "/" + messageReceiverId;
+            String messageReceiverRef = "Messages/"+ messageReceiverId + "/" + messageSenderId;
+
+            DatabaseReference userMessageKeyRef = rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).push();
+            String messagePushId = userMessageKeyRef.getKey();
+
+            Map messageTextBody = new HashMap();
+            messageTextBody.put("message", message);
+            messageTextBody.put("type", "text");
+            messageTextBody.put("from", messageSenderId);
+            messageTextBody.put("to", messageReceiverId);
+            messageTextBody.put("messageID", messagePushId);
+            messageTextBody.put("time", saveCurrentTime);
+            messageTextBody.put("date", saveCurrentDate);
+
+
+            Map messageBodyDetails = new HashMap();
+            messageBodyDetails.put(messageSenderRef + "/" + messagePushId, messageTextBody);
+            messageBodyDetails.put(messageReceiverRef + "/" + messagePushId, messageTextBody);
+
+            rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    messageInputText.getEditText().setText("");
+                }
+            });
 
         }
     }
@@ -367,92 +247,26 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Messages messages = snapshot.getValue(Messages.class);
-                messagesList.add(messages);
-                messageAdapter.notifyDataSetChanged();
-                userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-
-    private void sendMessage(){
-        String message =String.valueOf(messageInputText.getEditText().getText());
-        if(TextUtils.isEmpty(message))
-            displayToast("Please write message first");
-
-        else{
-            String messageSenderRef = "Messages/"+ messageSenderId + "/" + messageReceiverId;
-            String messageReceiverRef = "Messages/"+ messageReceiverId + "/" + messageSenderId;
-
-            DatabaseReference userMessageKeyRef = rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).push();
-            String messagePushId = userMessageKeyRef.getKey();
-
-            Map messageTextBody = new HashMap();
-            messageTextBody.put("message", message);
-            messageTextBody.put("type", "text");
-            messageTextBody.put("from", messageSenderId);
-            messageTextBody.put("to", messageReceiverId);
-            messageTextBody.put("messageID", messagePushId);
-            messageTextBody.put("time", saveCurrentTime);
-            messageTextBody.put("date", saveCurrentDate);
-
-
-            Map messageBodyDetails = new HashMap();
-            messageBodyDetails.put(messageSenderRef + "/" + messagePushId, messageTextBody);
-            messageBodyDetails.put(messageReceiverRef + "/" + messagePushId, messageTextBody);
-
-            rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    messageInputText.getEditText().setText("");
-                }
-            });
-
-        }
-    }
-
-
-    private void unloadIntentData(){
-
-
-
-    }
-
     private void displayToast(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+    private void unloadIntentData(){
+        messageReceiverId = getIntent().getExtras().get(KeysAndValues.VISIT_USER_ID).toString();
+        messageReceiverName = getIntent().getExtras().get(KeysAndValues.VISIT_USER_NAME_KEY).toString();
+        messageReceiverImage = getIntent().getExtras().get(KeysAndValues.VISIT_USER_IMAGE_KEY).toString();
 
     }
+    private void initializeFirebaseComponents() {
+        mAuth = FirebaseAuth.getInstance();
+        messageSenderId = mAuth.getCurrentUser().getUid();
+        rootRef = FirebaseDatabase.getInstance().getReference();
 
+    }
+    private void initializeListeners() {
+        sendMessageButton.setOnClickListener(v -> sendMessage());
+      //  sendFilesButton.setOnClickListener(v -> filesHandler());
+
+    }
     private void findViews() {
 
 

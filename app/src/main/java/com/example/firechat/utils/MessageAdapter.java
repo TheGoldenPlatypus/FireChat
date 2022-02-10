@@ -101,45 +101,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             }
         }
-        else if (fromMessageType.equals("image")) {
-            if (fromUserID.equals(messageSenderId)) {
-                holder.messageSenderPicture.setVisibility(View.VISIBLE);
-                Picasso.get().load(messages.getMessage()).into(holder.messageSenderPicture);
-
-            } else {
-                holder.receiverProfileImage.setVisibility(View.VISIBLE);
-                holder.messageReceiverPicture.setVisibility(View.VISIBLE);
-                Picasso.get().load(messages.getMessage()).into(holder.messageReceiverPicture);
-            }
-        }
-
-        else if (fromMessageType.equals("pdf") || fromMessageType.equals("docx")) {
-            if (fromUserID.equals(messageSenderId)) {
-                holder.messageSenderPicture.setVisibility(View.VISIBLE);
-                holder.messageReceiverPicture.setBackgroundResource(R.drawable.img_icon_file);
-
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
-                        holder.itemView.getContext().startActivity(intent);
-                    }
-                });
-            } else {
-                holder.receiverProfileImage.setVisibility(View.VISIBLE);
-                holder.messageReceiverPicture.setVisibility(View.VISIBLE);
-                holder.messageReceiverPicture.setBackgroundResource(R.drawable.img_icon_file);
-
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
-                        holder.itemView.getContext().startActivity(intent);
-                    }
-                });
-            }
-        }
-
 
     }
 

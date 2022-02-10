@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.firechat.R;
+import com.example.firechat.data.KeysAndValues;
 import com.example.firechat.utils.Contacts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -49,25 +50,22 @@ public class RequestsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         RequestsFragmentView = inflater.inflate(R.layout.fragment_requests, container, false);
-
-
-        mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        ChatRequestsRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
-        ContactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
-
+        initializeFirebaseComponents();
 
         myRequestsList = (RecyclerView) RequestsFragmentView.findViewById(R.id.chat_requests_list);
         myRequestsList.setLayoutManager(new LinearLayoutManager(getContext()));
         myRequestsList.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
-
         return RequestsFragmentView;
     }
+
+
+
+
+
     @Override
     public void onStart()
     {
@@ -84,13 +82,13 @@ public class RequestsFragment extends Fragment {
                     @Override
                     protected void onBindViewHolder(@NonNull final RequestsViewHolder holder, int position, @NonNull Contacts model)
                     {
-                        holder.itemView.findViewById(R.id.request_accept_btn).setVisibility(View.VISIBLE);
-                        holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.VISIBLE);
+//                        holder.itemView.findViewById(R.id.request_accept_btn).setVisibility(View.VISIBLE);
+//                        holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.VISIBLE);
 
 
                         final String list_user_id = getRef(position).getKey();
 
-                        DatabaseReference getTypeRef = getRef(position).child("request_type").getRef();
+                        DatabaseReference getTypeRef = getRef(position).child(KeysAndValues.REQUEST_TYPE).getRef();
 
                         getTypeRef.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -106,15 +104,15 @@ public class RequestsFragment extends Fragment {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot)
                                             {
-                                                if (dataSnapshot.hasChild("image"))
+                                                if (dataSnapshot.hasChild(KeysAndValues.IMAGE))
                                                 {
-                                                    final String requestProfileImage = dataSnapshot.child("image").getValue().toString();
+                                                    final String requestProfileImage = dataSnapshot.child(KeysAndValues.IMAGE).getValue().toString();
 
                                                     Picasso.get().load(requestProfileImage).into(holder.profileImage);
                                                 }
 
-                                                final String requestUserName = dataSnapshot.child("name").getValue().toString();
-                                                final String requestUserStatus = dataSnapshot.child("status").getValue().toString();
+                                                final String requestUserName = dataSnapshot.child(KeysAndValues.NAME).getValue().toString();
+                                                final String requestUserStatus = dataSnapshot.child(KeysAndValues.STATUS).getValue().toString();
 
                                                 holder.userName.setText(requestUserName);
                                                 holder.userStatus.setText("wants to connect with you.");
@@ -139,14 +137,14 @@ public class RequestsFragment extends Fragment {
                                                             {
                                                                 if (i == 0)
                                                                 {
-                                                                    ContactsRef.child(currentUserID).child(list_user_id).child("Contact")
-                                                                            .setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    ContactsRef.child(currentUserID).child(list_user_id).child(KeysAndValues.CONTACT)
+                                                                            .setValue(KeysAndValues.STATUS_SAVED).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task)
                                                                         {
                                                                             if (task.isSuccessful())
                                                                             {
-                                                                                ContactsRef.child(list_user_id).child(currentUserID).child("Contact")
+                                                                                ContactsRef.child(list_user_id).child(currentUserID).child(KeysAndValues.CONTACT)
                                                                                         .setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<Void> task)
@@ -225,24 +223,24 @@ public class RequestsFragment extends Fragment {
                                     }
                                     else if (type.equals("sent"))
                                     {
-                                        Button request_sent_btn = holder.itemView.findViewById(R.id.request_accept_btn);
-                                        request_sent_btn.setText("Request Sent");
+                                       // Button request_sent_btn = holder.itemView.findViewById(R.id.request_accept_btn);
+                                        //request_sent_btn.setText("Request Sent");
 
-                                        holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);
+                                      //  holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);
 
                                         UsersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot)
                                             {
-                                                if (dataSnapshot.hasChild("image"))
+                                                if (dataSnapshot.hasChild(KeysAndValues.IMAGE))
                                                 {
-                                                    final String requestProfileImage = dataSnapshot.child("image").getValue().toString();
+                                                    final String requestProfileImage = dataSnapshot.child(KeysAndValues.IMAGE).getValue().toString();
 
                                                     Picasso.get().load(requestProfileImage).into(holder.profileImage);
                                                 }
 
-                                                final String requestUserName = dataSnapshot.child("name").getValue().toString();
-                                                final String requestUserStatus = dataSnapshot.child("status").getValue().toString();
+                                                final String requestUserName = dataSnapshot.child(KeysAndValues.NAME).getValue().toString();
+                                                final String requestUserStatus = dataSnapshot.child(KeysAndValues.STATUS).getValue().toString();
 
                                                 holder.userName.setText(requestUserName);
                                                 holder.userStatus.setText("you have sent a request to " + requestUserName);
@@ -258,7 +256,7 @@ public class RequestsFragment extends Fragment {
                                                                 };
 
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                                        builder.setTitle("Already Sent Request");
+                                                        builder.setTitle(KeysAndValues.TITLE_REQUEST_SENT);
 
                                                         builder.setItems(options, new DialogInterface.OnClickListener() {
                                                             @Override
@@ -329,7 +327,14 @@ public class RequestsFragment extends Fragment {
     }
 
 
+    private void initializeFirebaseComponents() {
+        mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
+        UsersRef = FirebaseDatabase.getInstance().getReference().child(KeysAndValues.USERS);
+        ChatRequestsRef = FirebaseDatabase.getInstance().getReference().child(KeysAndValues.CHAT_REQUEST_CHILD);
+        ContactsRef = FirebaseDatabase.getInstance().getReference().child(KeysAndValues.CONTACTS);
 
+    }
     public static class RequestsViewHolder extends RecyclerView.ViewHolder
     {
         TextView userName, userStatus;
@@ -345,8 +350,8 @@ public class RequestsFragment extends Fragment {
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.user_profile_image);
-            AcceptButton = itemView.findViewById(R.id.request_accept_btn);
-            CancelButton = itemView.findViewById(R.id.request_cancel_btn);
+          //  AcceptButton = itemView.findViewById(R.id.request_accept_btn);
+           // CancelButton = itemView.findViewById(R.id.request_cancel_btn);
         }
     }
 }

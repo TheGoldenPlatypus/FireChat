@@ -2,17 +2,29 @@ package com.example.firechat.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.firechat.R;
+import com.example.firechat.data.KeysAndValues;
+import com.example.firechat.utils.MessageAdapter;
+import com.example.firechat.utils.Messages;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -21,18 +33,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageTask;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GroupChatActivity extends AppCompatActivity {
+
+    private CircleImageView userImage;
     private Toolbar tb;
     private ImageButton sendButton;
     private TextInputLayout userMessageInput;
-    private ScrollView sv;
-    private TextView displayTextMessages;
+    private RecyclerView userMessagesList;
+//    private TextView displayTextMessages;
 
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef, groupNameRef, groupMessageKeyRef;
@@ -52,85 +73,9 @@ public class GroupChatActivity extends AppCompatActivity {
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         groupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
 
-
         findViews();
         getUserInfo();
         initialViewsListeners();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        groupNameRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(snapshot.exists()){
-                    displayMessages(snapshot);
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(snapshot.exists()){
-                    displayMessages(snapshot);
-                }
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void displayMessages(DataSnapshot snapshot) {
-        Iterator it = snapshot.getChildren().iterator();
-        while(it.hasNext()){
-            String chatDate = (String) ((DataSnapshot)it.next()).getValue();
-            String chatMessage = (String) ((DataSnapshot)it.next()).getValue();
-            String chatName = (String) ((DataSnapshot)it.next()).getValue();
-            String chatTime = (String) ((DataSnapshot)it.next()).getValue();
-
-            displayTextMessages.append(chatName + " :\n" + chatMessage + "\n" + chatTime + "    "  + chatDate + "\n\n\n" );
-
-            // scroll automatically to the last message sent
-            sv.fullScroll(ScrollView.FOCUS_DOWN);
-
-
-        }
-    }
-
-    private void getUserInfo() {
-    usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            if(snapshot.exists()){
-                currentUserName = snapshot.child("name").getValue().toString();
-            }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-
-        }
-    });
-    }
-
-    private void initialViewsListeners() {
-        sendButton.setOnClickListener(v ->saveMessageInfoToDB());
-
     }
 
     private void saveMessageInfoToDB() {
@@ -164,24 +109,39 @@ public class GroupChatActivity extends AppCompatActivity {
         }
 
         userMessageInput.getEditText().setText("");
-        sv.fullScroll(ScrollView.FOCUS_DOWN);
-
-
 
 
     }
+    private void initialViewsListeners() {
+        sendButton.setOnClickListener(v ->saveMessageInfoToDB());
 
+    }
+    private void getUserInfo() {
+        usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    currentUserName = snapshot.child("name").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void displayToast(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-
     }
     private void findViews() {
         tb = (Toolbar) findViewById(R.id.group_chat_bar_layout);
         setSupportActionBar(tb);
         getSupportActionBar().setTitle(currentGroupName);
-        sendButton = findViewById(R.id.img_BTN_send);
+        sendButton = findViewById(R.id.img_BTN_group_send);
         userMessageInput= findViewById(R.id.input_EDT_group_message);
-        sv = findViewById(R.id.group_chat_scroll_view);
-        displayTextMessages = findViewById(R.id.group_chat_TXT_display);;
+        userMessagesList = findViewById(R.id.group_chat_recycler_view);
+       // displayTextMessages = findViewById(R.id.group_chat_TXT_display);;
     }
+
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,6 +58,9 @@ public class ChatsFragment extends Fragment
         chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
+        chatsList.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+
         return PrivateChatsView;
     }
     @Override
@@ -105,11 +109,11 @@ public class ChatsFragment extends Fragment
 
                                         if (state.equals("online"))
                                         {
-                                            holder.userStatus.setText("online");
+                                            holder.userStatus.setText(retStatus+"\nonline");
                                         }
                                         else if (state.equals("offline"))
                                         {
-                                            holder.userStatus.setText("Last Seen: " + date + " " + time);
+                                            holder.userStatus.setText( retStatus+ "\n\nLast Seen: " + date + " " + time);
                                         }
                                     }
                                     else

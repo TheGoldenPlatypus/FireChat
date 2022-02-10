@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:layout_marginTop="580dp"
-            android:text="Don't have account? \nor"
+            android:text="Don't have account?"
             android:textColor="#afafaf"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -118,17 +118,7 @@
             android:textColor="#0671db"
             android:textSize="16sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/login_BTN_login_phone"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="93dp"
-            android:layout_marginTop="610dp"
-            android:text="Login using phone"
-            android:textAllCaps="false"
-            android:textColor="#0671db"
-            android:textSize="16sp" />
+
 
     </RelativeLayout>
 

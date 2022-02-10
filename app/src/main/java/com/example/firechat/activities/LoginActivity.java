@@ -1,29 +1,22 @@
 package com.example.firechat.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.firechat.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextInputLayout login_EDT_email,login_EDT_password;
-    private MaterialButton login_BTN_forgot_password,login_BTN_login,login_BTN_register,login_BTN_login_phone;
+    private TextInputLayout edtEmail, edtPassword;
+    private MaterialButton loginButton, registerButton;
 
     private FirebaseAuth mAuth;
 
@@ -35,47 +28,42 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mAuth = FirebaseAuth.getInstance();
+        initializeFirebaseComponents();
         findViews();
         initializeViewsListeners();
     }
 
-
-
-
-
-    private void initializeViewsListeners() {
-        login_BTN_register.setOnClickListener(v ->passUserToRegisterActivity());
-        login_BTN_login.setOnClickListener(v ->login());
-        login_BTN_login_phone.setOnClickListener(v ->passUserToPhoneLoginActivity());
-    }
-
-
-
     private void login() {
-        String email =String.valueOf(login_EDT_email.getEditText().getText());
-        String password = String.valueOf(login_EDT_password.getEditText().getText());
+        String email =String.valueOf(edtEmail.getEditText().getText());
+        String password = String.valueOf(edtPassword.getEditText().getText());
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
             displayToast("Please check all fields are filled");
         else{
             setLoadingBarAttr();
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
 
-                    if(task.isSuccessful()){
-                        passUserToMainActivity();
-                        displayToast("Account logged in successfully" );
-                    }
-                    else{
-                        String message = task.getException().toString();
-                        displayToast("Error : " + message);
-
-                    }
-                    loadingBar.dismiss();
+                if(task.isSuccessful()){
+                    activityShifter(LoginActivity.this,MainActivity.class,true,true);
+                    displayToast("Account logged in successfully" );
                 }
+                else{
+                    String message = task.getException().toString();
+                    displayToast("Error : " + message);
+
+                }
+                loadingBar.dismiss();
             });
         }
+    }
+    private void activityShifter(Activity from, Class to, boolean addFlags , boolean finish){
+        Intent intent = new Intent(from,to);
+        if(addFlags)
+            // user can't go back if the back button is pressed
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        if(finish)
+            finish();
+
     }
     private void setLoadingBarAttr(){
         loadingBar.setTitle("Sign in");
@@ -89,33 +77,18 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
 
     }
-    private void passUserToPhoneLoginActivity() {
-        Intent phoneLoginIntent = new Intent(LoginActivity.this,PhoneLoginActivity.class);
-        startActivity(phoneLoginIntent);
-
-
+    private void initializeViewsListeners() {
+        registerButton.setOnClickListener(v -> activityShifter(LoginActivity.this,RegisterActivity.class,false,false));
+        loginButton.setOnClickListener(v ->login());
     }
-    private void passUserToMainActivity() {
-        Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
-        // user can't go back if the back button is pressed
-        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(mainIntent);
-        finish();
-
-    }
-    private void passUserToRegisterActivity() {
-
-        Intent registerIntent = new Intent( LoginActivity.this,RegisterActivity.class);
-        startActivity(registerIntent);
-
+    private void initializeFirebaseComponents() {
+        mAuth = FirebaseAuth.getInstance();
     }
     private void findViews() {
-        login_EDT_email  = findViewById(R.id.login_EDT_email);
-        login_EDT_password  = findViewById(R.id.login_EDT_password);
-        login_BTN_forgot_password  = findViewById(R.id.login_BTN_forgot_password);
-        login_BTN_login  = findViewById(R.id.login_BTN_login);
-        login_BTN_register  = findViewById(R.id.login_BTN_register);
-        login_BTN_login_phone  = findViewById(R.id.login_BTN_login_phone);
+        edtEmail = findViewById(R.id.login_EDT_email);
+        edtPassword = findViewById(R.id.login_EDT_password);
+        loginButton = findViewById(R.id.login_BTN_login);
+        registerButton = findViewById(R.id.login_BTN_register);
         loadingBar = new ProgressDialog(this);
 
     }
