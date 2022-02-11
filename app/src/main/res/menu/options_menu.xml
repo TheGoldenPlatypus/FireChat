@@ -8,11 +8,6 @@
         app:showAsAction="never">
     </item>
 
-    <item
-        android:id="@+id/main_group_option"
-        android:title="Create Group Chat"
-        app:showAsAction="never">
-    </item>
 
     <item
         android:id="@+id/main_settings_option"

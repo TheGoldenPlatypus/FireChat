@@ -117,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
             mAuth.signOut();
             activityShifter(MainActivity.this, LoginActivity.class,true,true);
         }
-        if(item.getItemId() == R.id.main_group_option)
-            requestNewGroup();
         if(item.getItemId() == R.id.main_settings_option)
             activityShifter(MainActivity.this, SettingsActivity.class,false,false);
         if(item.getItemId() == R.id.main_find_friends_option)

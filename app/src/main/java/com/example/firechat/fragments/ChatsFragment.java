@@ -32,10 +32,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatsFragment extends Fragment
 {
-    private View PrivateChatsView;
+    private View privateChatsView;
     private RecyclerView chatsList;
 
-    private DatabaseReference ChatsRef, UsersRef;
+    private DatabaseReference chatsRef, usersRef;
     private FirebaseAuth mAuth;
     private String currentUserID="";
 
@@ -48,20 +48,20 @@ public class ChatsFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        PrivateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
+        privateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
-        ChatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        chatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
+        chatsList = (RecyclerView) privateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
         chatsList.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
-        return PrivateChatsView;
+        return privateChatsView;
     }
     @Override
     public void onStart()
@@ -71,7 +71,7 @@ public class ChatsFragment extends Fragment
 
         FirebaseRecyclerOptions<Contacts> options =
                 new FirebaseRecyclerOptions.Builder<Contacts>()
-                        .setQuery(ChatsRef, Contacts.class)
+                        .setQuery(chatsRef, Contacts.class)
                         .build();
 
 
@@ -83,7 +83,7 @@ public class ChatsFragment extends Fragment
                         final String usersIDs = getRef(position).getKey();
                         final String[] retImage = {"default_image"};
 
-                        UsersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
+                        usersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot)
                             {

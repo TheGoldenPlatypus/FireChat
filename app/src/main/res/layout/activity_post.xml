@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PostActivity">
+
+    <include layout="@layout/app_bar_layout"
+        android:id="@+id/update_post_toolbar"/>
+
+    <ImageButton
+        android:id="@+id/post_image_post"
+        android:layout_width="420dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="100dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/img_icon_post_pic" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_EDT_post"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:hint="write somthing about your image here"
+        android:textColorHint="#afafaf"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginStart="40dp"
+        app:boxStrokeColor="#0671db"
+        >
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:ems="30"
+            android:imeOptions="actionDone"
+            android:textColor="#0671db" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/post_BTN_post"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="620dp"
+        android:text="POST"
+        android:textColor="#0671db"
+        app:cornerRadius="50dp"
+        app:strokeColor="#0671db"
+        app:strokeWidth="2dp" />
+
+</RelativeLayout>
