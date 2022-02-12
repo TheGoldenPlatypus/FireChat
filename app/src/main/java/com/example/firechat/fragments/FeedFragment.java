@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,9 +72,9 @@ public class FeedFragment extends Fragment {
         findViews();
         feedList = feedFragmentView.findViewById(R.id.feed_posts_list);
         feedList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,true);
         linearLayoutManager.setStackFromEnd(true);
+       feedList.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         feedList.setLayoutManager(linearLayoutManager);
         initialListeners();
         displayAllUsersPost();
@@ -155,7 +157,8 @@ public class FeedFragment extends Fragment {
     {
         CircleImageView profileImage;
         TextView userName,postDate,postTime,postDescription;
-        ImageView postedImage;
+
+        AppCompatImageView postedImage;
 
         public PostsViewHolder(View itemView)
         {
@@ -170,4 +173,6 @@ public class FeedFragment extends Fragment {
 
 
     }
+
+
 }

@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    app:cardCornerRadius="30dp"
+    android:elevation="8dp"
+    app:cardElevation="8dp"
+    app:strokeWidth="4dp"
+    app:strokeColor="#0671db"
+    android:layout_margin="10dp">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp">
 
-        <LinearLayout
+        android:background="@android:color/white"
+        android:layout_marginBottom="4dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:padding="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/post_profile_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/img_profile_default"
-                android:scaleType="centerCrop"
                 android:layout_marginLeft="4dp"
-                />
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_profile_default" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -37,19 +43,19 @@
                     android:id="@+id/post_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="user name"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="8dp"
+                    android:text="user name"
                     android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black" />
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginLeft="5dp"
+                    android:orientation="horizontal"
                     android:padding="2dp">
 
                     <TextView
@@ -58,8 +64,8 @@
                         android:layout_height="wrap_content"
                         android:text="has been updated a post"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp"
-                        android:textStyle="bold"/>
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/post_date"
@@ -67,42 +73,42 @@
                         android:layout_height="wrap_content"
                         android:text="Date"
                         android:textColor="@android:color/black"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/post_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
                         android:text="Time"
                         android:textColor="@android:color/black"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <TextView
             android:id="@+id/post_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Post Description"
+            android:layout_marginStart="15dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:padding="3dp"
-            android:textSize="14sp"
-            android:textColor="@android:color/black"/>
+            android:text="Post Description"
+            android:textColor="@android:color/black"
+            android:textSize="17sp" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/post_image"
-            android:layout_width="320dp"
-            android:layout_height="280dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="30dp"
-            android:scaleType="fitXY"
             android:adjustViewBounds="true"
-            />
-    </LinearLayout>
+            android:scaleType="centerCrop" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -48,6 +48,7 @@
             app:endIconMode="password_toggle"
             app:boxStrokeColor="#0671db"
             android:textColorHint ="#afafaf"
+            android:password="true"
             app:boxBackgroundColor="#FFFFFF	"
             android:inputType="textPassword"
             android:padding="16dp">
@@ -56,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="30"
+                android:password="true"
                 android:imeOptions="actionDone"
                 android:textColor="#0671db"
                 android:textColorHint="#0671db"/>

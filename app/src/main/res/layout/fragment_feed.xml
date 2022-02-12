@@ -4,36 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+
     tools:context=".fragments.FeedFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What's on your mind?"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="25sp"
+        android:textAllCaps="false"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        />
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/feed_BTN_post"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="290dp"
         android:text="Post"
         android:textAllCaps="false"
+        android:textColor="#0671db"
         android:textSize="16sp"
         app:cornerRadius="50dp"
         app:strokeColor="#0671db"
-        app:strokeWidth="2dp"/>
+        app:strokeWidth="2dp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/feed_posts_list"
-        android:layout_width = "match_parent"
-        android:layout_height = "match_parent"
-        android:layout_alignParentStart ="true"
-        android:layout_marginTop="50dp"
-        ></androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/feed_posts_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="50dp"></androidx.recyclerview.widget.RecyclerView>
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

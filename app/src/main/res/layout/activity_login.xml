@@ -46,18 +46,21 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="310dp"
             android:hint="Password"
+            android:password="true"
             app:endIconMode="password_toggle"
             android:textColorHint = "#afafaf"
             app:boxBackgroundColor="#FFFFFF	"
             app:boxStrokeColor="#0671db"
             android:inputType="textPassword"
             android:padding="16dp"
+
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="30"
+                android:password="true"
                 android:textColorHint="#0671db"
                 android:textColor="#0671db"
                 android:imeOptions="actionDone" />

@@ -99,6 +99,35 @@ public class ChatActivity extends AppCompatActivity {
         Picasso.get().load(messageReceiverImage).placeholder(R.drawable.img_profile_default).into(userImage);
         displayLastSeen();
 
+        rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Messages messages = snapshot.getValue(Messages.class);
+                messagesList.add(messages);
+                messageAdapter.notifyDataSetChanged();
+                userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 
@@ -147,41 +176,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Messages messages = snapshot.getValue(Messages.class);
-                messagesList.add(messages);
-                messageAdapter.notifyDataSetChanged();
-                userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
 
     private void sendMessage(){
         String message =String.valueOf(messageInputText.getEditText().getText());
@@ -320,6 +315,8 @@ public class ChatActivity extends AppCompatActivity {
                                         //     String ImageUploadId = rootReference.push().getKey();
 
                                         // Adding image upload id s child element into databaseReference.
+
+
 
                                         Map messageTextBody = new HashMap();
                                         messageTextBody.put("message", downloadUrl);

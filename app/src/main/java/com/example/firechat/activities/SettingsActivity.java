@@ -113,6 +113,8 @@ public class SettingsActivity extends AppCompatActivity {
             {
 
                 Uri resultUri = result.getUri();
+                profileImage.setImageURI(resultUri);
+
                 final StorageReference filePath  = userProfileImagesRef.child(currentUserId + ".jpg");
                 UploadTask uploadTask = filePath.putFile(resultUri);
                 Task<Uri>uriTask = uploadTask.continueWithTask(task -> {
