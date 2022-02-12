@@ -1,4 +1,4 @@
-package com.example.firechat.utils;
+package com.example.firechat.classes;
 
 public class Contacts {
     private String name,status,image;

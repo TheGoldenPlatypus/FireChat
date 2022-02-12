@@ -7,7 +7,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,11 +28,9 @@ import android.widget.Toast;
 import com.example.firechat.R;
 
 import com.example.firechat.data.KeysAndValues;
-import com.example.firechat.utils.MessageAdapter;
-import com.example.firechat.utils.Messages;
-import com.google.android.gms.tasks.Continuation;
+import com.example.firechat.libs.MessageAdapter;
+import com.example.firechat.classes.Messages;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,10 +43,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -309,10 +303,10 @@ public class ChatActivity extends AppCompatActivity {
 
                                     if (task.isSuccessful()) {
 
-                                        //  Uri downloadUri = task.getResult();
+
                                         // Getting image upload ID.
                                         downloadUrl = task.getResult().toString();
-                                        //     String ImageUploadId = rootReference.push().getKey();
+
 
                                         // Adding image upload id s child element into databaseReference.
 
@@ -350,12 +344,6 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 }
             });
-
-    private void findViews() {
-
-
-    }
-
 
 
 }

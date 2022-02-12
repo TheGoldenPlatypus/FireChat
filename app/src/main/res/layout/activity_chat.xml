@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".activities.ChatActivity">
 
     <include
@@ -70,21 +71,21 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/img_icon_send"
             />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_EDT_chat_message"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="340dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_toEndOf="@+id/img_BTN_chat_send_file"
             android:layout_toStartOf="@+id/img_BTN_chat_send"
+            android:layout_toEndOf="@+id/img_BTN_chat_send_file"
             android:textColorHint="#afafaf"
             app:boxCornerRadiusBottomEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
-            app:boxStrokeColor="#0671db"
-            >
+            app:boxStrokeColor="#0671db">
 
 
             <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:ems="30"
                 android:imeOptions="actionDone"
-                android:textColor="#0671db" />
+                android:textColor="#0671db"
+                />
 
 
         </com.google.android.material.textfield.TextInputLayout>

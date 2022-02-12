@@ -17,10 +17,9 @@ import android.widget.TextView;
 
 import com.example.firechat.R;
 import com.example.firechat.data.KeysAndValues;
-import com.example.firechat.utils.Contacts;
+import com.example.firechat.classes.Contacts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;

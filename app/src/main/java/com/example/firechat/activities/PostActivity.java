@@ -135,10 +135,9 @@ public class PostActivity extends AppCompatActivity {
 
                     if (task.isSuccessful()) {
 
-                        //  Uri downloadUri = task.getResult();
-                        // Getting image upload ID.
+
                         downloadUrl = task.getResult().toString();
-                   //     String ImageUploadId = rootReference.push().getKey();
+
 
                         // Adding image upload id s child element into databaseReference.
 
@@ -148,24 +147,7 @@ public class PostActivity extends AppCompatActivity {
                     }
 
                 });
-//                filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
-//            {
-//                if(task.isSuccessful())
-//                {
-//                    downloadUrl = task.getResult().getStorage().getDownloadUrl().toString();
-//
-//                    Toast.makeText(PostActivity.this, "image uploaded successfully to Storage...", Toast.LENGTH_SHORT).show();
-//                    savePostInformationToDatabase();
-//                }
-//                else
-//                {
-//                    String message = task.getException().getMessage();
-//                    Toast.makeText(PostActivity.this, "Error occured: " + message, Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
     }
 
     private void savePostInformationToDatabase() {
@@ -190,7 +172,7 @@ public class PostActivity extends AppCompatActivity {
 
                             if(task.isSuccessful())
                             {
-                                activityShifter(PostActivity.this, FeedFragment.class,false,false);
+                                activityShifter(PostActivity.this, MainActivity.class,false,false);
                                 displayToast(" New post is updated successfully");
                                 loadingBar.dismiss();
 

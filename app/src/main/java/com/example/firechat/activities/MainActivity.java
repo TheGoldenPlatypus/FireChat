@@ -78,36 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 .updateChildren(onlineStateMap);
 
     }
-    private void requestNewGroup() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,R.style.AlertDialog);
-        builder.setTitle(KeysAndValues.TITLE_ENTER_GROUP_NAME);
 
-        final EditText groupNameField = new EditText(MainActivity.this);
-        groupNameField.setHint("e.g Afeka Android Class Winter 2021");
-        builder.setView(groupNameField);
-
-        builder.setPositiveButton("Create", (dialog, which) -> {
-            String groupName = groupNameField.getText().toString();
-            if(TextUtils.isEmpty(groupName)){
-                displayToast("Please insert group name");
-            }
-            else{
-                createNewGroup(groupName);
-            }
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-
-        builder.show();
-    }
-    private void createNewGroup(String groupName) {
-        rootReference.child(KeysAndValues.GROUPS).child(groupName).setValue("").addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                displayToast(groupName + " is created successfully");
-            }
-        });
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);

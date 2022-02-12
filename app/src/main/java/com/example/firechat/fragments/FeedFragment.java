@@ -13,14 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.firechat.R;
 import com.example.firechat.activities.PostActivity;
-import com.example.firechat.utils.Contacts;
-import com.example.firechat.utils.Posts;
+import com.example.firechat.classes.Posts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
@@ -29,7 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.Context;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -143,6 +140,7 @@ public class FeedFragment extends Fragment {
             }
 
         };
+
 
         feedList.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();

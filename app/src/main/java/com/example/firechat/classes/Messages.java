@@ -1,4 +1,4 @@
-package com.example.firechat.utils;
+package com.example.firechat.classes;
 
 public class Messages {
     private String from, message, type, to, messageID, time, date, name;

@@ -129,13 +129,12 @@ public class SettingsActivity extends AppCompatActivity {
 
                             if (task.isSuccessful()) {
 
-                                //  Uri downloadUri = task.getResult();
+
                                 // Getting image upload ID.
                                 final String downloadURL = task.getResult().toString();
                                 String ImageUploadId = rootReference.push().getKey();
 
                                 // Adding image upload id s child element into databaseReference.
-
                                 rootReference.child(KeysAndValues.USERS).child(currentUserId).child(KeysAndValues.IMAGE)
                                         .setValue(downloadURL);
 

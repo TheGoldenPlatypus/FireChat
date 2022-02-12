@@ -19,6 +19,8 @@ public class KeysAndValues {
     public final static String REQUEST_SENT_STATE = "request_Sent";
     public final static String FRIENDS_STATE = "friends";
     public final static String REQUEST_RECEIVED_STATE = "request_received";
+    public final static String USER_STATE = "userState";
+
 
 
     //user status
@@ -76,7 +78,6 @@ public class KeysAndValues {
     public final static String CONTACT= "Contact";
 
     public final static String GROUPS = "Groups";
-    public final static String USER_STATE = "userState";
     public final static String CHAT_REQUEST_CHILD = "Chat Requests";
 
 

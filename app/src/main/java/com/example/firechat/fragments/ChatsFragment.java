@@ -16,7 +16,8 @@ import android.widget.TextView;
 
 import com.example.firechat.activities.ChatActivity;
 import com.example.firechat.R;
-import com.example.firechat.utils.Contacts;
+import com.example.firechat.classes.Contacts;
+import com.example.firechat.data.KeysAndValues;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,8 +53,8 @@ public class ChatsFragment extends Fragment
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
-        chatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
-        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        chatsRef = FirebaseDatabase.getInstance().getReference().child(KeysAndValues.CONTACTS).child(currentUserID);
+        usersRef = FirebaseDatabase.getInstance().getReference().child(KeysAndValues.USERS);
 
         chatsList = (RecyclerView) privateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -89,29 +90,29 @@ public class ChatsFragment extends Fragment
                             {
                                 if (dataSnapshot.exists())
                                 {
-                                    if (dataSnapshot.hasChild("image"))
+                                    if (dataSnapshot.hasChild(KeysAndValues.IMAGE))
                                     {
-                                        retImage[0] = dataSnapshot.child("image").getValue().toString();
+                                        retImage[0] = dataSnapshot.child(KeysAndValues.IMAGE).getValue().toString();
                                         Picasso.get().load(retImage[0]).into(holder.profileImage);
                                     }
 
-                                    final String retName = dataSnapshot.child("name").getValue().toString();
-                                    final String retStatus = dataSnapshot.child("status").getValue().toString();
+                                    final String retName = dataSnapshot.child(KeysAndValues.NAME).getValue().toString();
+                                    final String retStatus = dataSnapshot.child(KeysAndValues.STATUS).getValue().toString();
 
                                     holder.userName.setText(retName);
 
 
-                                    if (dataSnapshot.child("userState").hasChild("state"))
+                                    if (dataSnapshot.child(KeysAndValues.USER_STATE).hasChild("state"))
                                     {
-                                        String state = dataSnapshot.child("userState").child("state").getValue().toString();
-                                        String date = dataSnapshot.child("userState").child("date").getValue().toString();
-                                        String time = dataSnapshot.child("userState").child("time").getValue().toString();
+                                        String state = dataSnapshot.child(KeysAndValues.USER_STATE).child("state").getValue().toString();
+                                        String date = dataSnapshot.child(KeysAndValues.USER_STATE).child("date").getValue().toString();
+                                        String time = dataSnapshot.child(KeysAndValues.USER_STATE).child("time").getValue().toString();
 
-                                        if (state.equals("online"))
+                                        if (state.equals(KeysAndValues.USER_STATUS_ONLINE))
                                         {
                                             holder.userStatus.setText(retStatus+"\nonline");
                                         }
-                                        else if (state.equals("offline"))
+                                        else if (state.equals(KeysAndValues.USER_STATUS_OFFLINE))
                                         {
                                             holder.userStatus.setText( retStatus+ "\n\nLast Seen: " + date + " " + time);
                                         }
@@ -127,9 +128,9 @@ public class ChatsFragment extends Fragment
                                         public void onClick(View view)
                                         {
                                             Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                            chatIntent.putExtra("visit_user_id", usersIDs);
-                                            chatIntent.putExtra("visit_user_name", retName);
-                                            chatIntent.putExtra("visit_image", retImage[0]);
+                                            chatIntent.putExtra(KeysAndValues.VISIT_USER_ID, usersIDs);
+                                            chatIntent.putExtra(KeysAndValues.VISIT_USER_NAME_KEY, retName);
+                                            chatIntent.putExtra(KeysAndValues.VISIT_USER_IMAGE_KEY, retImage[0]);
                                             startActivity(chatIntent);
                                         }
                                     });
