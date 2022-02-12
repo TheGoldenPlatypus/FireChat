@@ -30,8 +30,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private List<Messages> userMessagesList;
     private FirebaseAuth mAuth;
     private DatabaseReference usersRef;
-    private MessageViewHolder holder;
-    private int position;
+
 
 
     public MessageAdapter(List<Messages> userMessagesList) {
@@ -51,8 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, @SuppressLint("RecyclerView") int position) {
-
+    public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
         String messageSenderId = mAuth.getCurrentUser().getUid();
         Messages messages = userMessagesList.get(position);
 
@@ -83,6 +81,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.messageReceiverPicture.setVisibility(View.GONE);
 
 
+
+
         if(fromMessageType.equals("text")){
             if(fromUserID.equals(messageSenderId)){
                 holder.senderMessageText.setVisibility(View.VISIBLE);
@@ -101,9 +101,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             }
         }
+       else if(fromMessageType.equals("image")){
+            if(fromUserID.equals(messageSenderId)){
+                holder.messageSenderPicture.setVisibility(View.VISIBLE);
+                Picasso.get().load(messages.getMessage()).into(holder.messageSenderPicture);
+            }
+            else{
+                holder.receiverProfileImage.setVisibility(View.VISIBLE);
+                holder.messageReceiverPicture.setVisibility(View.VISIBLE);
+                Picasso.get().load(messages.getMessage()).into(holder.messageReceiverPicture);
 
+            }
+        }
     }
-
 
 
     @Override

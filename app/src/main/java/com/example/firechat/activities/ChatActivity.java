@@ -1,5 +1,9 @@
 package com.example.firechat.activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -9,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -77,8 +82,8 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
 
-    private String messageReceiverId, messageReceiverName,messageReceiverImage, messageSenderId,saveCurrentTime, saveCurrentDate;
-    private String checker= "", myUrl="";
+    private String messageReceiverId, messageReceiverName,messageReceiverImage, messageSenderId,saveCurrentTime, saveCurrentDate,downloadUrl;
+    private String checker= "text", myUrl="";
 
 
     @Override
@@ -125,6 +130,7 @@ public class ChatActivity extends AppCompatActivity {
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messageAdapter);
 
+        loadingBar = new ProgressDialog(this);
 
         Calendar calendar = Calendar.getInstance();
 
@@ -191,7 +197,7 @@ public class ChatActivity extends AppCompatActivity {
 
             Map messageTextBody = new HashMap();
             messageTextBody.put("message", message);
-            messageTextBody.put("type", "text");
+            messageTextBody.put("type", checker);
             messageTextBody.put("from", messageSenderId);
             messageTextBody.put("to", messageReceiverId);
             messageTextBody.put("messageID", messagePushId);
@@ -264,9 +270,90 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void initializeListeners() {
         sendMessageButton.setOnClickListener(v -> sendMessage());
-      //  sendFilesButton.setOnClickListener(v -> filesHandler());
+        sendFilesButton.setOnClickListener(v -> filesHandler());
 
     }
+
+    private void filesHandler() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        someActivityResultLauncher.launch(intent);
+
+    }
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK  ) {
+                        loadingBar.setTitle("Sending Image");
+                        loadingBar.setMessage("Please wait while we are sending the image");
+                        loadingBar.setCanceledOnTouchOutside(false);
+                        loadingBar.show();
+
+                        checker = "image";
+                        fileUri = result.getData().getData();
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Image Files");
+                        String messageSenderRef = "Messages/"+ messageSenderId + "/" + messageReceiverId;
+                        String messageReceiverRef = "Messages/"+ messageReceiverId + "/" + messageSenderId;
+
+                        DatabaseReference userMessageKeyRef = rootRef.child("Messages").child(messageSenderId).child(messageReceiverId).push();
+                        String messagePushId = userMessageKeyRef.getKey();
+                        StorageReference filePath = storageReference.child(messagePushId+"."+"jpg");
+                        uploadTask =  filePath.putFile(fileUri);
+                        Task<Uri>uriTask = uploadTask.continueWithTask(task -> {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            // Continue with the task to get the download URL
+                            return filePath.getDownloadUrl();
+                        })
+                                .addOnCompleteListener(task -> {
+
+                                    if (task.isSuccessful()) {
+
+                                        //  Uri downloadUri = task.getResult();
+                                        // Getting image upload ID.
+                                        downloadUrl = task.getResult().toString();
+                                        //     String ImageUploadId = rootReference.push().getKey();
+
+                                        // Adding image upload id s child element into databaseReference.
+
+                                        Map messageTextBody = new HashMap();
+                                        messageTextBody.put("message", downloadUrl);
+                                        messageTextBody.put("name", fileUri.getLastPathSegment());
+                                        messageTextBody.put("type", checker);
+                                        messageTextBody.put("from", messageSenderId);
+                                        messageTextBody.put("to", messageReceiverId);
+                                        messageTextBody.put("messageID", messagePushId);
+                                        messageTextBody.put("time", saveCurrentTime);
+                                        messageTextBody.put("date", saveCurrentDate);
+
+
+                                        Map messageBodyDetails = new HashMap();
+                                        messageBodyDetails.put(messageSenderRef + "/" + messagePushId, messageTextBody);
+                                        messageBodyDetails.put(messageReceiverRef + "/" + messagePushId, messageTextBody);
+
+                                        rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
+                                            @Override
+                                            public void onComplete(@NonNull Task task) {
+                                                loadingBar.dismiss();
+                                                messageInputText.getEditText().setText("");
+                                                checker = "text";
+
+                                            }
+                                        });
+
+                                    }
+
+                                });
+
+                    }
+                }
+            });
+
     private void findViews() {
 
 
